@@ -81,14 +81,10 @@ async def process_url(url_input: URLInput):     # URLInput으로 사용자의 �
     try:
         loader = WebBaseLoader(
             web_paths=(url_input.url,),
-            bs_kwargs=dict(
-                parse_only=bs4.SoupStrainer(
-                    class_=("newsct_article _article_body",)
-                )
-            ),
+            bs_kwargs=dict(),
         )
         docs = loader.load()
-
+        # print(docs)
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         splits = text_splitter.split_documents(docs)
         vectorstore = FAISS.from_documents(documents=splits, embedding=embeddings)
